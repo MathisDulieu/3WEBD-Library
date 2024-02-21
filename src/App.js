@@ -9,6 +9,7 @@ import './css/App.css';
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Books from "./Pages/Books";
+import About from "./Pages/About";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/books" element={<Books />} />
+            <Route exact path="/about" element={<About />} />
             <Route path="/forbidden" element={<Forbidden />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
