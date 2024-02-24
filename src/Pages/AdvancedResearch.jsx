@@ -7,26 +7,42 @@ function AdvancedResearch() {
     const [filterValue, setFilterValue] = useState('');
     const [books, setBooks] = useState([]);
     const [inputValue, setInputValue] = useState('');
-    
+    const [loading, setLoading] = useState(false);
+    const [searchError, setSearchError] = useState('');
+  
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setFilterValue(inputValue);
-        }, 500);
-        
-        return () => clearTimeout(timer);
+      const timer = setTimeout(() => {
+        setFilterValue(inputValue);
+      }, 500);
+  
+      return () => clearTimeout(timer);
     }, [inputValue]);
-
+  
     const handleSearch = async () => {
-        try {
-            const response = await axios.get('http://openlibrary.org/search.json', {
-                params: {
-                    [searchFilter]: filterValue,
-                }
-            });
-            setBooks(response.data.docs);
-        } catch (error) {
-            console.error('Error fetching books:', error);
+      setLoading(true);
+      setSearchError('');
+      try {
+        const response = await axios.get('http://openlibrary.org/search.json', {
+          params: {
+            [searchFilter]: filterValue
+          }
+        });
+        const books = response.data.docs;
+        if (searchFilter === 'year') {
+          const filteredBooks = books.filter(book => book.first_publish_year === filterValue);
+          setBooks(filteredBooks);
+        } else {
+          setBooks(books);
         }
+        if (books.length === 0) {
+          setSearchError('No results found.');
+        }
+      } catch (error) {
+        console.error('Error fetching books:', error);
+        setSearchError('An error occurred while fetching the books.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     return (
@@ -59,18 +75,23 @@ function AdvancedResearch() {
                     Search
                 </button>
             </div>
-            <ul>
-                {books.map((book, index) => (
-                    <li key={index} className="border-b border-gray-200 py-4">
-                        {console.log(book)}
-                        <Link to={`/books/${book.id_wikidata}`} className="text-blue-500 hover:underline">
-                            <h2 className="text-xl font-bold mb-2">{book.title}</h2>
-                        </Link>
-                        <p className="text-gray-700">Author: {book.author_name && book.author_name.join(', ')}</p>
-                        <p className="text-gray-700">First Publish Year: {book.first_publish_year}</p>
-                    </li>
-                ))}
-            </ul>
+            {loading ? (
+                <div>Loading...</div>
+            ) : searchError ? (
+                <div className="text-red-500">{searchError}</div>
+            ) : (
+                <ul>
+                    {books.map((book, index) => (
+                        <li key={index} className="border-b border-gray-200 py-4">
+                            <Link to={`/books/${book.id_wikidata}`} className="text-blue-500 hover:underline">
+                                <h2 className="text-xl font-bold mb-2">{book.title}</h2>
+                            </Link>
+                            <p className="text-gray-700">Author: {book.author_name && book.author_name.join(', ')}</p>
+                            <p className="text-gray-700">First Publish Year: {book.first_publish_year}</p>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }
