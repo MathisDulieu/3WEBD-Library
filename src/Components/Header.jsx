@@ -1,9 +1,10 @@
 import React from 'react'
+import SearchBar from './SearchBar'
 
-function Header() {
-    const libraryLogo = require('../assets/LibraryLogo.png')
-    return (
-        <header className='bg-slate-800 text-white shadow-lg'>
+function Header () {
+  const libraryLogo = require('../assets/LibraryLogo.png')
+  return (
+    <header className='bg-slate-800 text-white shadow-lg'>
       <div className='container mx-auto flex xl:flex-row flex-col items-center'>
         <a
           href='/'
@@ -17,6 +18,13 @@ function Header() {
             <li className='p-5 xl:p-8 active'>
               <a href='/books'>
                 <span className='bg-black p-2 rounded-md uppercase'>Books</span>
+              </a>
+            </li>
+            <li className='p-5 xl:p-8 active'>
+              <a href='/advanced-search'>
+                <span className='bg-black p-2 rounded-md uppercase'>
+                  Research
+                </span>
               </a>
             </li>
             <li className='p-5 xl:p-8'>
@@ -38,9 +46,10 @@ function Header() {
             </li>
           </ul>
         </nav>
+        <SearchBar />
       </div>
     </header>
-    )
+  )
 }
 
 export default Header
