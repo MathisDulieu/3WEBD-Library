@@ -8,10 +8,11 @@ import Forbidden from "./Pages/Forbidden";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import AdvancedResearch from "./Pages/AdvancedResearch";
-import BookDetail from "./Pages/BookDetail";
+import BookDetails from "./Pages/BookDetails";
 import About from "./Pages/About";
 import './css/App.css';
 import QuickSearch from "./Pages/QuickSearch";
+import Admin from "./Pages/Admin";
 
 function App() {
     return (
@@ -24,8 +25,9 @@ function App() {
                     <Route exact path="/login" element={<Login />} />
                     <Route exact path="/advanced-search" element={<AdvancedResearch />} />
                     <Route exact path='/quick-search/:query' element={<QuickSearch />} />
-                    <Route exact path="/books/:id_Wikidata" element={<BookDetail />} />
+                    <Route exact path="/books/:title" element={<BookDetails />} />
                     <Route exact path="/about" element={<About />} />
+                    <Route exact path="/admin" element={<Admin />} />
                     <Route path="/forbidden" element={<Forbidden />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>

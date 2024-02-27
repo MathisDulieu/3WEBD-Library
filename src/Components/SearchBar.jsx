@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {useNavigate } from 'react-router-dom';
 
 
-
 function SearchBar() {
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();

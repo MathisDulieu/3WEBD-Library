@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import "../css/AdvancedResearch.css"
+import {useNavigate} from "react-router-dom";
 
 function AdvancedResearch() {
     const [searchFilters, setSearchFilters] = useState({
@@ -12,6 +14,7 @@ function AdvancedResearch() {
     const [searchError, setSearchError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [booksPerPage] = useState(10);
+    const navigate = useNavigate();
 
     const handleSearch = async () => {
         setLoading(true);
@@ -61,6 +64,10 @@ function AdvancedResearch() {
         });
     };
 
+    const handleBookDetail = (title) => {
+        navigate(`/books/${title}`);
+    };
+
     return (
         <div className="flex justify-center">
             <div className="max-w-4xl mx-auto py-8">
@@ -103,7 +110,7 @@ function AdvancedResearch() {
                             <div>
                                 <div className="flex flex-wrap justify-center">
                                     {currentBooks.map((book, index) => (
-                                        <div key={index} className="relative flex w-96 sm:w-72 md:w-80 flex-col rounded-xl bg-emerald-300 bg-clip-border text-amber-50 shadow-md m-10">
+                                        <div key={index} className="relative flex w-96 sm:w-72 md:w-80 flex-col rounded-xl border-gray-300 bg-clip-border text-amber-50 shadow-md m-10 shadow-grey">
                                             <div className="relative mx-6 mt-8 h-72 sm:h-96 overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700">
                                                 {book.cover_i && (
                                                     <img
@@ -114,21 +121,21 @@ function AdvancedResearch() {
                                                 )}
                                             </div>
                                             <div className="p-6">
-                                                <p className="block font-bold font-sans text-base leading-relaxed text-blue-gray-900 antialiased">
+                                                <p className="block font-bold font-sans text-base leading-relaxed text-black antialiased">
                                                     Title : {book.title}
                                                 </p>
-                                                <p className="block font-bold font-sans text-base leading-relaxed text-blue-gray-900 antialiased">
+                                                <p className="block font-bold font-sans text-base leading-relaxed text-black antialiased">
                                                     Author: {book.author_name && book.author_name.join(', ')}
                                                 </p>
-                                                <p className="block font-bold font-sans text-base leading-relaxed text-blue-gray-900 antialiased">
+                                                <p className="block font-bold font-sans text-base leading-relaxed text-black antialiased">
                                                     First publish year : {book.first_publish_year}
                                                 </p>
                                             </div>
                                             <div className="p-6 pt-0">
                                                 <button
-                                                    className="block w-full select-none rounded-lg bg-blue-gray-900/10 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-blue-gray-900 transition-all hover:scale-105 focus:scale-105 focus:opacity-[0.85] active:scale-100 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                                    className="block w-full select-none rounded-lg bg-emerald-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-blue-gray-900 transition-all hover:scale-105 focus:scale-105 focus:opacity-[0.85] active:scale-100 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                                                     type="button"
-                                                    onClick={() => handleSearch()}
+                                                    onClick={() => handleBookDetail(book.title)}
                                                 >
                                                     More Informations
                                                 </button>

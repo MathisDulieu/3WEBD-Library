@@ -21,7 +21,7 @@ function Login() {
 
             if (email === userData.email && password === userData.password) {
                 setLoggedIn(true);
-                navigate('/books');
+                navigate('/admin');
             } else {
                 alert('Incorrect credentials. Please try again.');
             }
