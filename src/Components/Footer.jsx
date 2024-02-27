@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function Footer() {
+    useEffect(() => {
+        const adjustFooter = () => {
+            const footer = document.querySelector('footer');
+            const body = document.body;
+            const html = document.documentElement;
+            const windowHeight = window.innerHeight;
+            const bodyHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+            if (windowHeight >= bodyHeight) {
+                footer.classList.add('fixed', 'bottom-0', 'w-full');
+            } else {
+                footer.classList.remove('fixed', 'bottom-0', 'w-full');
+            }
+        };
+
+        window.addEventListener('resize', adjustFooter);
+        adjustFooter();
+
+        return () => {
+            window.removeEventListener('resize', adjustFooter);
+        };
+    }, []);
+
     return (
         <footer className="bg-slate-800 py-4">
             <div className="container mx-auto flex justify-center items-center">
