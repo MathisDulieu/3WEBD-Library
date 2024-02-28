@@ -25,7 +25,7 @@ function App() {
                     <Route exact path="/login" element={<Login />} />
                     <Route exact path="/advanced-search" element={<AdvancedResearch />} />
                     <Route exact path='/quick-search/:query' element={<QuickSearch />} />
-                    <Route exact path="/books/:title" element={<BookDetails />} />
+                    <Route exact path="/books/:title/:author" element={<BookDetails />} />
                     <Route exact path="/about" element={<About />} />
                     <Route exact path="/admin" element={<Admin />} />
                     <Route path="/forbidden" element={<Forbidden />} />

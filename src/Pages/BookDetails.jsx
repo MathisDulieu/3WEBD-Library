@@ -3,15 +3,15 @@ import axios from "axios";
 import { Link, useParams } from 'react-router-dom';
 
 function BookDetails() {
-    const { title } = useParams();
+    const { title, author} = useParams();
     const googleBooksEndpoint = "https://www.googleapis.com/books/v1/volumes";
-    const googleBooksParams = `?q=${encodeURIComponent(title)}&langRestrict=fr`;
-
+    const googleBooksParams = `?q=intitle:${encodeURIComponent(title)}+inauthor:${encodeURIComponent(author)}`;
     const googleBooksLink = googleBooksEndpoint + googleBooksParams;
 
     const [bookDetails, setBookDetails] = useState(null);
     const [wikipediaLink, setWikipediaLink] = useState(null);
     const [bookImage, setBookImage] = useState(null);
+    const [wikiDescription, setWikiDescription] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,10 +20,23 @@ function BookDetails() {
                 if (response.data.items && response.data.items.length > 0) {
                     const bookData = response.data.items[0].volumeInfo;
                     setBookDetails(bookData);
+
+                    if (bookData.authors) {
+                        setBookDetails(prevState => ({ ...prevState, authors: bookData.authors.join(', ') }));
+                    }
                     setWikipediaLink(`https://fr.wikipedia.org/wiki/${encodeURIComponent(title)}`);
 
                     if (bookData.imageLinks && bookData.imageLinks.thumbnail) {
                         setBookImage(bookData.imageLinks.thumbnail);
+                    } else {
+                        const query = `http://openlibrary.org/search.json?title=${encodeURIComponent(title)}`;
+                        const response = await axios.get(query);
+                        if (response.data.docs && response.data.docs.length > 0) {
+                            const book = response.data.docs[0];
+                            if (book.cover_i) {
+                                setBookImage(`http://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`);
+                            }
+                        }
                     }
                 } else {
                     setBookDetails(null);
@@ -34,27 +47,45 @@ function BookDetails() {
         };
 
         fetchData();
-    }, [title, googleBooksLink]);
+    }, [title, author, googleBooksLink]);
+
+    useEffect(() => {
+        const fetchWikipediaDescription = async () => {
+            try {
+                const response = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`);
+                setWikiDescription(response.data.extract);
+            } catch (error) {
+                console.error('Error fetching Wikipedia description:', error);
+            }
+        };
+
+        fetchWikipediaDescription();
+    }, [title]);
 
     if (!bookDetails) {
         return <div>Loading...</div>;
     }
 
     return (
-        <div>
-            <h1>{title}</h1>
-            {bookImage && <img src={bookImage} alt="Book Cover" />}
-            <p>{bookDetails.description}</p>
-            <p>Author(s): {bookDetails.authors}</p>
-            <p>Publisher: {bookDetails.publisher}</p>
-            <p>Published Date: {bookDetails.publishedDate}</p>
-            <p>Page Count: {bookDetails.pageCount}</p>
-            <p>Categories: {bookDetails.categories}</p>
-            <p>Language: {bookDetails.language}</p>
-            <p>ISBN: {bookDetails.industryIdentifiers.map(identifier => identifier.identifier)}</p>
-            <p>Rating: {bookDetails.averageRating}</p>
-            <p>Rating Count: {bookDetails.ratingsCount}</p>
-            <Link to={wikipediaLink} className="text-blue-700">Wikipedia Link</Link>
+        <div className="container mx-auto p-4">
+            <div className="flex flex-col items-center">
+                <h1 className="text-3xl font-bold mb-4">{title}</h1>
+                {bookImage && <img src={bookImage} alt="Book Cover" className="mb-4" />}
+                {bookDetails.description && <p className="text-center mb-2">{bookDetails.description}</p>}
+                {bookDetails.authors && <p><span className="font-semibold">Author(s):</span> {bookDetails.authors}</p>}
+                {bookDetails.publisher && <p><span className="font-semibold">Publisher:</span> {bookDetails.publisher}</p>}
+                {bookDetails.publishedDate && <p><span className="font-semibold">Published Date:</span> {bookDetails.publishedDate}</p>}
+                {bookDetails.pageCount && <p><span className="font-semibold">Page Count:</span> {bookDetails.pageCount}</p>}
+                {bookDetails.categories && <p><span className="font-semibold">Categories:</span> {bookDetails.categories}</p>}
+                {bookDetails.language && <p><span className="font-semibold">Language:</span> {bookDetails.language}</p>}
+                {bookDetails.industryIdentifiers && (
+                    <p><span className="font-semibold">ISBN:</span> {bookDetails.industryIdentifiers.map(identifier => identifier.identifier)}</p>
+                )}
+                {bookDetails.averageRating && <p><span className="font-semibold">Rating:</span> {bookDetails.averageRating}</p>}
+                {bookDetails.ratingsCount && <p><span className="font-semibold">Rating Count:</span> {bookDetails.ratingsCount}</p>}
+                {wikipediaLink && <Link to={wikipediaLink} className="text-blue-700 mt-4">Wikipedia Link</Link>}
+                {wikiDescription && <p><span>Wikipedia description : </span> {wikiDescription}</p>}
+            </div>
         </div>
     );
 }
