@@ -2,7 +2,7 @@ import React from 'react';
 
 function Pagination({ totalPages, currentPage, onPageChange }) {
     return (
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-4 mb-2">
             <button
                 onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
                 disabled={currentPage === 1}

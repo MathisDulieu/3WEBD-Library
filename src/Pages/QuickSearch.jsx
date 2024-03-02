@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 function QuickSearch() {
@@ -14,8 +13,12 @@ function QuickSearch() {
             setSearchError('');
             try {
                 const url = `http://openlibrary.org/search.json?title=${query}`;
-                const response = await axios.get(url);
-                const books = response.data.docs;
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                const books = data.docs;
                 setSearchResults(books);
                 if (books.length === 0) {
                     setSearchError('No results found.');

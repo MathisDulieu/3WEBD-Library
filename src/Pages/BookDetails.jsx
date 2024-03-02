@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link, useParams } from 'react-router-dom';
 
 function BookDetails() {
@@ -16,9 +15,13 @@ function BookDetails() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(googleBooksLink);
-                if (response.data.items && response.data.items.length > 0) {
-                    const bookData = response.data.items[0].volumeInfo;
+                const response = await fetch(googleBooksLink);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                if (data.items && data.items.length > 0) {
+                    const bookData = data.items[0].volumeInfo;
                     setBookDetails(bookData);
 
                     if (bookData.authors) {
@@ -30,9 +33,13 @@ function BookDetails() {
                         setBookImage(bookData.imageLinks.thumbnail);
                     } else {
                         const query = `http://openlibrary.org/search.json?title=${encodeURIComponent(title)}`;
-                        const response = await axios.get(query);
-                        if (response.data.docs && response.data.docs.length > 0) {
-                            const book = response.data.docs[0];
+                        const response = await fetch(query);
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        const bookResponse = await response.json();
+                        if (bookResponse.docs && bookResponse.docs.length > 0) {
+                            const book = bookResponse.docs[0];
                             if (book.cover_i) {
                                 setBookImage(`http://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`);
                             }
@@ -52,8 +59,12 @@ function BookDetails() {
     useEffect(() => {
         const fetchWikipediaDescription = async () => {
             try {
-                const response = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`);
-                setWikiDescription(response.data.extract);
+                const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setWikiDescription(data.extract);
             } catch (error) {
                 console.error('Error fetching Wikipedia description:', error);
             }

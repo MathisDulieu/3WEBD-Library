@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import '../css/Home.css';
 
 function HomePage() {
@@ -8,8 +7,12 @@ function HomePage() {
     useEffect(() => {
         const fetchBookChanges = async () => {
             try {
-                const response = await axios.get('http://openlibrary.org/recentchanges/2024/02.json?limit=9');
-                setBookChanges(response.data);
+                const response = await fetch('http://openlibrary.org/recentchanges/2024/02.json?limit=9');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setBookChanges(data);
             } catch (error) {
                 console.error('Error fetching book changes:', error);
             }
@@ -53,4 +56,3 @@ function HomePage() {
 }
 
 export default HomePage;
-
