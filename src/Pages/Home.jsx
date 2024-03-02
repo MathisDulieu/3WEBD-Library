@@ -32,6 +32,10 @@ function HomePage() {
         }
     };
 
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <div className="mx-auto lg:max-w-7xl mt-3">
             <div className="container">
@@ -51,6 +55,12 @@ function HomePage() {
                     </div>
                 </div>
             </div>
+            <button
+                className="fixed bottom-16 right-4 bg-gray-700 text-white px-4 py-2 rounded-full"
+                onClick={scrollToTop}
+            >
+                Back to Top
+            </button>
         </div>
     );
 }

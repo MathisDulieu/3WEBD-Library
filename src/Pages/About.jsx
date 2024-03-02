@@ -2,7 +2,7 @@ import React from 'react'
 
 function About () {
     return (
-        <div className='max-w-4xl mx-auto py-8'>
+        <div className='max-w-4xl mx-auto py-8 px-4'>
             <h1 className='text-3xl font-bold mb-4'>About Our App</h1>
             <div className='text-justify'>
                 <p className='mb-4'>

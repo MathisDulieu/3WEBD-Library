@@ -13,15 +13,15 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: white; /* Couleur du texte */
+    color: white;
   }
   
   .title {
-    font-size: 2.5rem; /* Taille de la police du titre */
+    font-size: 2.5rem;
     margin-bottom: 10px;
   }
   
   .subtitle {
-    font-size: 1.5rem; /* Taille de la police du sous-titre */
+    font-size: 1.5rem;
   }
   
