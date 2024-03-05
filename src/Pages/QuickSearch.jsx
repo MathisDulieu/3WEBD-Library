@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import BookCard from '../Components/BookCard';
 
 function QuickSearch() {
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchError, setSearchError] = useState('');
     const { query } = useParams();
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     useEffect(() => {
         const fetchSearchResults = async () => {
@@ -34,35 +39,46 @@ function QuickSearch() {
         fetchSearchResults();
     }, [query]);
 
+    const handleScroll = () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollThreshold = 200;
+        const backButton = document.getElementById('back-to-top');
+        if (backButton) {
+            if (scrollTop > scrollThreshold) {
+                backButton.style.display = 'block';
+            } else {
+                backButton.style.display = 'none';
+            }
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <div className="max-w-4xl mx-auto py-8">
-            <h2 className="text-3xl font-bold mb-4">Search Results for "{query}"</h2>
+            <h2 className="text-3xl text-center font-bold mb-4">Search Results for "{query}"</h2>
             {loading ? (
                 <div>Loading...</div>
             ) : searchError ? (
                 <div className="text-red-500">{searchError}</div>
             ) : (
-                <ul>
+                <div className="flex flex-wrap justify-center">
                     {searchResults.map((book, index) => (
-                        <li key={index} className="border-b border-gray-200 py-4">
-                            <h3 className="text-xl font-bold mb-2">{book.title}</h3>
-                            {book.cover_i && (
-                                <img
-                                    src={`http://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`}
-                                    alt={`${book.title} cover`}
-                                    className="w-24 h-auto"
-                                />
-                            )}
-                            <p className="text-gray-700">
-                                Author: {book.author_name && book.author_name.join(', ')}
-                            </p>
-                            <p className="text-gray-700">
-                                First Publish Year: {book.first_publish_year}
-                            </p>
-                        </li>
+                        <BookCard key={index} book={book} onClick={() => {}} />
                     ))}
-                </ul>
+                </div>
             )}
+            <button
+                id="back-to-top"
+                className="fixed bottom-16 right-4 bg-gray-700 text-white px-4 py-2 rounded-full"
+                onClick={scrollToTop}
+                style={{ display: 'none' }}
+            >
+                Back to Top
+            </button>
         </div>
     );
 }

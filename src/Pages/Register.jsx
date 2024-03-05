@@ -76,8 +76,6 @@ function Register() {
                 return 'bg-orange-400';
             case 'Strong':
                 return 'bg-green-300';
-            default:
-                return '';
         }
     };
 

@@ -25,7 +25,7 @@ function Footer() {
     }, []);
 
     return (
-        <footer className="bg-slate-800 py-4">
+        <footer className="bg-slate-800 py-4 mt-auto">
             <div className="container mx-auto flex justify-center items-center">
                 <a href="https://github.com/MathisDulieu/3WEBD-Library" className="text-white hover:text-gray-500">
                     <span className="sr-only">GitHub</span>

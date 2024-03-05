@@ -24,27 +24,14 @@ function BookDetails() {
                     const bookData = data.items[0].volumeInfo;
                     setBookDetails(bookData);
 
+                    if (bookData.imageLinks && bookData.imageLinks.thumbnail) {
+                        setBookImage(bookData.imageLinks.thumbnail);
+                    }
+
                     if (bookData.authors) {
                         setBookDetails(prevState => ({ ...prevState, authors: bookData.authors.join(', ') }));
                     }
                     setWikipediaLink(`https://fr.wikipedia.org/wiki/${encodeURIComponent(title)}`);
-
-                    if (bookData.imageLinks && bookData.imageLinks.thumbnail) {
-                        setBookImage(bookData.imageLinks.thumbnail);
-                    } else {
-                        const query = `http://openlibrary.org/search.json?title=${encodeURIComponent(title)}`;
-                        const response = await fetch(query);
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        const bookResponse = await response.json();
-                        if (bookResponse.docs && bookResponse.docs.length > 0) {
-                            const book = bookResponse.docs[0];
-                            if (book.cover_i) {
-                                setBookImage(`http://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`);
-                            }
-                        }
-                    }
                 } else {
                     setBookDetails(null);
                 }
@@ -95,7 +82,7 @@ function BookDetails() {
                 {bookDetails.averageRating && <p><span className="font-semibold">Rating:</span> {bookDetails.averageRating}</p>}
                 {bookDetails.ratingsCount && <p><span className="font-semibold">Rating Count:</span> {bookDetails.ratingsCount}</p>}
                 {wikipediaLink && <Link to={wikipediaLink} className="text-blue-700 mt-4">Wikipedia Link</Link>}
-                {wikiDescription && <p><span>Wikipedia description : </span> {wikiDescription}</p>}
+                {wikiDescription && <p className="text-center mb-2"><span>Wikipedia description : </span> {wikiDescription}</p>}
             </div>
         </div>
     );

@@ -43,7 +43,7 @@ function SearchBar() {
             />
             <button
                 type="submit"
-                className="absolute inset-y-0 right-0 px-4 py-1 bg-indigo-600 text-white rounded-full hover:bg-indigo-700"
+                className="absolute inset-y-0 right-0 px-4 py-1 bg-blue-900 text-white rounded-full hover:bg-blue-700"
             >
                 Search
             </button>
