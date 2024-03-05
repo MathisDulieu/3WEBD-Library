@@ -25,10 +25,6 @@ function HomePage() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
     return (
         <div className="mx-auto lg:max-w-7xl mt-3">
             <div className="container">

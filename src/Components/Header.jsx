@@ -38,11 +38,7 @@ function Header() {
                         </li>
                     </ul>
                 </nav>
-<<<<<<< HEAD
                 <div className="w-full md:w-96 mt-4 md:mt-0" data-testid="search-bar">
-=======
-                <div className="w-full md:w-96 mt-4 md:mt-0">
->>>>>>> 5b7eaa2c5868ca1d84609ac9fb077ed33d0cc85c
                     <SearchBar />
                 </div>
             </div>
