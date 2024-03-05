@@ -7,7 +7,7 @@ function HomePage() {
     useEffect(() => {
         const fetchBookChanges = async () => {
             try {
-                const response = await fetch('http://openlibrary.org/recentchanges/2024/02.json?limit=9');
+                const response = await fetch('https://openlibrary.org/recentchanges/2024/02.json?limit=9');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
