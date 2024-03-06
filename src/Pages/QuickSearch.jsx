@@ -18,7 +18,7 @@ function QuickSearch() {
             setLoading(true);
             setSearchError('');
             try {
-                const url = `http://openlibrary.org/search.json?title=${query}`;
+                const url = `https://openlibrary.org/search.json?title=${query}`;
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
