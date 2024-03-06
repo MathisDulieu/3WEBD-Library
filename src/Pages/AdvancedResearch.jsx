@@ -5,9 +5,7 @@ import BookCard from '../Components/BookCard'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../Components/Pagination'
 
-export function handlePageChange (currentPage, setCurrentPage, pageNumber) {
-  setCurrentPage(pageNumber)
-}
+
 
 export const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -48,6 +46,10 @@ function AdvancedResearchAlt () {
       ...searchFilters,
       [fieldName]: value
     })
+  }
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
   }
 
   const handleSearchButtonClick = () => {

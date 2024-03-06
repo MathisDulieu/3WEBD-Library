@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import BookCard from '../Components/BookCard';
 
 function QuickSearch() {
@@ -7,6 +7,7 @@ function QuickSearch() {
     const [loading, setLoading] = useState(false);
     const [searchError, setSearchError] = useState('');
     const { query } = useParams();
+    const navigate = useNavigate();
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -67,7 +68,7 @@ function QuickSearch() {
             ) : (
                 <div className="flex flex-wrap justify-center">
                     {searchResults.map((book, index) => (
-                        <BookCard key={index} book={book} onClick={() => {}} />
+                        <BookCard key={index} book={book} onClick={() => {navigate(`/books/${book.title}/${book.author_name}`)}} />
                     ))}
                 </div>
             )}
